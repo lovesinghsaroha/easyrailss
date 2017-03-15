@@ -1,0 +1,61 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="col-md-10">
+            <h5><i class="fa fa-tv text-primary"></i> Personal Apps</h5>
+        </div>
+        <div class="col-md-2">
+            <a style="cursor: pointer;" class="btn btn-primary btn-sm btn-block" data-toggle="modal" data-target="#cr_uappModal"><b>Create New</b></a>
+        </div>
+    </div>
+</div>
+<hr>
+<div class="row">
+    <div class="col-md-12">
+        <div ng-repeat="uap in u_apps">
+            <div class="media">
+                <div class="media-left">
+                    <a ng-href="/#/a/{{uap.er_user_app.id}}">
+                        <i class="media-object fa fa-cube text-primary fa-3x"></i>
+                    </a>
+                </div>
+                <div class="media-body">
+                    <h5 class="media-heading">{{uap.er_user_app.name}}</h5>
+                    <font class="text-muted">{{uap.er_user_app.description}}</font>
+                </div>
+            </div>
+            <hr>
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="cr_uappModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <form class="form-horizontal" ng-submit="createApp(ua)">
+                    <fieldset>
+                        <legend>Create new app</legend>
+                        <div class="form-group">
+                            <label for="inputName" class="col-lg-2 control-label"><b>Name</b></label>
+                            <div class="col-lg-10">
+                                <input class="form-control" id="inputuaName" placeholder="Name here.." ng-model="ua.name" type="text" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputDescription" class="col-lg-2 control-label"><b>Description</b></label>
+                            <div class="col-lg-10">
+                                <input class="form-control" id="inputuaDescription" placeholder="Description here.." ng-model="ua.description" type="text" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-lg-10 col-lg-offset-2">
+                                <button type="reset" class="btn btn-default">Cancel</button>
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

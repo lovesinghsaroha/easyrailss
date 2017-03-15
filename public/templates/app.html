@@ -1,0 +1,293 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="col-md-10">
+            <div class="media">
+                <div class="media-left">
+                    <i class="media-object fa fa-cube text-primary fa-3x"></i>
+                </div>
+                <div class="media-body">
+                    <h5 class="media-heading">{{app.name}}</h5>
+                    <font class="text-muted">{{app.description}}</font>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <a ng-href="/{{app.rep_n}}" target="_blank" style="cursor: pointer;" class="btn btn-primary btn-sm btn-block"><b>Open app</b></a>
+        </div>
+    </div>
+</div>
+<hr>
+<div class="row">
+    <div class="col-md-12">
+        <b><p> APP REPO</p></b>
+        <div class="col-md-4">
+            <div class="panel panel-primary">
+                <!-- Default panel contents -->
+                <div class="panel-body">
+                    <p><b><i class="fa fa-clone"></i> Controllers</b></p>
+                    <div ng-repeat="ctrl in ap_ctrls">
+                        <h5><a style="cursor: pointer;" ng-click="selCtrl(ctrl)" class="text-primary" data-toggle="modal" data-target="#read_ctrlModal"><i class="fa fa-file-o text-primary"></i></a> {{ctrl.name}}<font class="text-muted">_controller.rb</font></h5>
+                    </div>
+                    <a style="cursor: pointer;" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#cr_ctrlModal"><b>Create new</b></a>
+                </div>
+                <!-- List group -->
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="panel panel-primary">
+                <!-- Default panel contents -->
+                <div class="panel-body">
+                    <p><b><i class="fa fa-clone"></i> Models</b></p>
+                    <div ng-repeat="mdl in ap_models">
+                        <h5><a style="cursor: pointer;" ng-click="selModel(mdl)" class="text-primary" data-toggle="modal" data-target="#read_mdlModal"><i class="fa fa-file-o text-primary"></i></a> {{mdl.name}}<font class="text-muted">.rb</font></h5>
+                    </div>
+                    <a style="cursor: pointer;" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#cr_mdlModal"><b>Create new</b></a>
+                </div>
+                <!-- List group -->
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="panel panel-primary">
+                <!-- Default panel contents -->
+                <div class="panel-body">
+                    <p><b><i class="fa fa-clone"></i> Views</b></p>
+                    <div ng-repeat="ctrl in ap_ctrls">
+                        <h5><a style="cursor: pointer;" ng-click="selCtrlv(ctrl)" class="text-primary" data-toggle="modal" data-target="#read_ctrlvModal"><i class="fa fa-folder-o text-primary"></i></a> {{ctrl.name}}</h5>
+                    </div>
+                    <a style="cursor: pointer;" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#ad_ctrlvModal"><b>Add new</b></a>
+                </div>
+                <!-- List group -->
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="panel panel-primary">
+                <!-- Default panel contents -->
+                <div class="panel-body">
+                    <p><b><i class="fa fa-clone"></i> Config</b></p>
+                    <h5><a style="cursor: pointer;" ng-click="readRoute()" class="text-primary" data-toggle="modal" data-target="#read_routesModal"><i class="fa fa-file-o text-primary"></i></a> routes<font class="text-muted">.rb</font></h5>
+                    <h5><a style="cursor: pointer;" ng-click="readDb()" class="text-primary" data-toggle="modal" data-target="#read_dbModal"><i class="fa fa-file-o text-primary"></i></a> database<font class="text-muted">.yml</font></h5>
+                </div>
+                <!-- List group -->
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="cr_ctrlModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <form class="form-horizontal" ng-submit="createD(ap_ctrls,apctrl,'create_ctrl')">
+                    <fieldset>
+                        <legend>Create Controller</legend>
+                        <div class="form-group">
+                            <label for="inputName" class="col-lg-2 control-label"><b>Name</b></label>
+                            <div class="col-lg-10">
+                                <input class="form-control" id="inputuaName" placeholder="Name here.." ng-model="apctrl.name" type="text" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-lg-10 col-lg-offset-2">
+                                <button type="reset" class="btn btn-default">Cancel</button>
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="cr_mdlModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <form class="form-horizontal" ng-submit="createD(ap_models,apmodel,'create_model')">
+                    <fieldset>
+                        <legend>Create Model</legend>
+                        <div class="form-group">
+                            <label for="inputName" class="col-lg-2 control-label"><b>Name</b></label>
+                            <div class="col-lg-10">
+                                <input class="form-control" id="inputuaName" placeholder="Name here.." ng-model="apmodel.name" type="text" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputName" class="col-lg-2 control-label"><b>Table name</b></label>
+                            <div class="col-lg-10">
+                                <input class="form-control" id="inputuaName" placeholder="Table name here.." ng-model="apmodel.table_n" type="text" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-lg-10 col-lg-offset-2">
+                                <button type="reset" class="btn btn-default">Cancel</button>
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="ad_ctrlvModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <form class="form-horizontal" ng-submit="createD([],ctrlv,'create_view')">
+                    <fieldset>
+                        <legend>Create Controller Views</legend>
+                        <div class="form-group">
+                            <label for="inputName" class="col-lg-2 control-label"><b>Name</b></label>
+                            <div class="col-lg-10">
+                                <input class="form-control" id="inputuaName" placeholder="Name here.." ng-model="ctrlv.name" type="text" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="select" class="col-lg-2 control-label"><b>Controller</b></label>
+                            <div class="col-lg-10">
+                                <select ng-model="ctrlv.ctrl_n" class="form-control">
+                                    <option ng-repeat="ct in ap_ctrls" ng-value="{{ct.name}}">{{ct.name}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-lg-10 col-lg-offset-2">
+                                <button type="reset" class="btn btn-default">Cancel</button>
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="read_ctrlModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <h5><b class="text-muted">class </b> <font class="capitalize text-primary">{{selectedCtrl.name}}</font>Controller</h5>
+                <form id="edit_ctrlForm" ng-submit="updateD(selectedCtrl , 'update_ctrl')">
+                    <textarea rows="10" cols="50" class="form-control" placeholder="Your code here.." ng-model="selectedCtrl.content">
+                    </textarea>
+                    <h5><b class="text-muted">end</b></h5>
+                    <button class="btn btn-primary btn-sm" type="submit" name="submit"><b>Update</b></button>
+                </form>
+                <small><b class="text-muted">Last Updated On {{selectedCtrl.updated_at | date:'dd MMM yy'}}</b></small>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="read_mdlModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <h5><b class="text-muted">class</b> <font class="capitalize text-primary">{{selectedModel.name}}</font></h5>
+                <form id="edit_ctrlForm" ng-submit="updateD(selectedModel,'update_model')">
+                    <textarea rows="10" cols="50" class="form-control" placeholder="Your code here.." ng-model="selectedModel.content">
+                    </textarea>
+                    <h5><b class="text-muted">end</b></h5>
+                    <button class="btn btn-primary btn-sm" type="submit" name="submit"><b>Update</b></button>
+                </form>
+                <small><b class="text-muted">Last Updated On {{selectedModel.updated_at | date:'dd MMM yy'}}</b></small>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="read_ctrlvModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <h5><b class="text-muted">Folder</b> <font class="capitalize text-primary">{{selectedCtrlv.name}}</font></h5>
+                <div id="views_list">
+                    <div ng-repeat="cv in ctrl_views">
+                        <h5><a style="cursor: pointer;" ng-click="selView(cv)" class="text-primary"><i class="fa fa-file-o text-primary"></i></a> {{cv.name}}<font class="text-muted">.html.erb</font></h5>
+                    </div>
+                    <small><b class="text-muted">Last Updated On {{selectedCtrlv.updated_at | date:'dd MMM yy'}}</b></small>
+                </div>
+                <div id="ctrl_view" class="hide">
+                    <form ng-submit="updateD(selectedView,'update_view')">
+                        <textarea rows="10" cols="50" class="form-control" placeholder="Your code here.." ng-model="selectedView.content">
+                        </textarea>
+                        <h5><b class="text-muted">end</b></h5>
+                        <button class="btn btn-primary btn-sm" type="submit" name="submit"><b>Update</b></button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="read_routesModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <h5><b class="text-muted">Rails.application.routes.draw </b> <font class="text-primary">do</font></h5>
+                <form id="edit_ctrlForm" ng-submit="updateD(app,'update_routes')">
+                    <textarea rows="10" cols="50" class="form-control" placeholder="Your code here.." ng-model="app.routes_inf">
+                    </textarea>
+                    <h5><b class="text-muted">end</b></h5>
+                    <button class="btn btn-primary btn-sm" type="submit" name="submit"><b>Update</b></button>
+                </form>
+                <small><b class="text-muted">Last Updated On {{app.updated_at | date:'dd MMM yy'}}</b></small>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="read_dbModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <form class="form-horizontal" id="edit_ctrlForm" ng-submit="updateD(app,'update_db')">
+                    <fieldset>
+                        <legend>Database info..</legend>
+                        <div class="form-group">
+                            <label for="inputName" class="col-lg-2 control-label"><b>Adapter</b></label>
+                            <div class="col-lg-10">
+                                <input class="form-control" id="inputuaName" placeholder="Adapter here.." ng-model="app.db_inf.adapter" type="text" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputName" class="col-lg-2 control-label"><b>Host</b></label>
+                            <div class="col-lg-10">
+                                <input class="form-control" id="inputuaName" placeholder="Host here.." ng-model="app.db_inf.host" type="text" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputName" class="col-lg-2 control-label"><b>Username</b></label>
+                            <div class="col-lg-10">
+                                <input class="form-control" id="inputuaName" placeholder="Username here.." ng-model="app.db_inf.username" type="text" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputName" class="col-lg-2 control-label"><b>Password</b></label>
+                            <div class="col-lg-10">
+                                <input class="form-control" id="inputuaName" placeholder="Password here.." ng-model="app.db_inf.password" type="password" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputName" class="col-lg-2 control-label"><b>Database name</b></label>
+                            <div class="col-lg-10">
+                                <input class="form-control" id="inputuaName" placeholder="Database here.." ng-model="app.db_inf.database" type="text" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputName" class="col-lg-2 control-label"><b>Port</b></label>
+                            <div class="col-lg-10">
+                                <input class="form-control" id="inputuaName" placeholder="Port here.." ng-model="app.db_inf.port" type="text" required>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <button class="btn btn-primary btn-sm" type="submit" name="submit"><b>Update</b></button>
+                </form>
+                <small><b class="text-muted">Last Updated On {{app.updated_at | date:'dd MMM yy'}}</b></small>
+            </div>
+        </div>
+    </div>
+</div>

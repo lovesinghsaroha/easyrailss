@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>EasyRails</title>
+    <%= csrf_meta_tags %>
+
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
+    <% if params[:action] == "dashboard" -%>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <% end -%>
+  </head>
+
+  <body>
+  <div class="container-fluid">
+    <%= yield %>
+   </div>
+  </body>
+</html>
