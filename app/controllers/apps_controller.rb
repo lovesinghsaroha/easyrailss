@@ -184,12 +184,8 @@ class AppsController < ApplicationController
 # Write file data
     def write_file_d(loc , cont , upd)
     	if Rails.env.production?
-    		if upd
-    			open("/Apps/heroku/easyrails/" + loc, 'w') {|f| f.puts cont}
-    		else
-    			client = DropboxClient.new("Uvvp9nfYjAAAAAAAAAAAEArT_bJ3I4xhUwL2pHhMY3KHgNsIxf_5hLxCNSfCq3mI")
-    		    response = client.put_file("/Apps/heroku/easyrails/" + loc, cont)
-    		end
+    		client = DropboxClient.new("Uvvp9nfYjAAAAAAAAAAAEArT_bJ3I4xhUwL2pHhMY3KHgNsIxf_5hLxCNSfCq3mI")
+    		response = client.put_file("/Apps/heroku/easyrails/" + loc, cont , upd)
     	else
     		File.open(loc , 'w') do |f|
 				f.write(cont)
