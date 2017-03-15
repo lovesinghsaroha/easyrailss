@@ -1,4 +1,9 @@
 	require 'json'
+	require 'dropbox_sdk'
+	APP_KEY = 'mis9kxt9yt5kv22'
+    APP_SECRET = 'rya345l06cguky7'
+
+
 class AppsController < ApplicationController
 	before_action :isloggedj 
 	before_action :set_def 
@@ -51,9 +56,7 @@ class AppsController < ApplicationController
 	def create_ctrl
 		ac = ErAppCtrl.new(name: params[:name], er_user_app_id: @ua.id, uic: "#{params[:name]}.#{@ua.id}",content: "")
 		if ac.save
-			File.open("apps_repo/#{@ua.rep_n}/app/controllers/#{@ua.rep_n}/#{ac.name}_controller.rb" , 'w') do |f|
-				f.write("")
-			end
+			write_file_d("apps_repo/#{@ua.rep_n}/app/controllers/#{@ua.rep_n}/#{ac.name}_controller.rb","")
 			#Dir.mkdir "apps_repo/#{@ua.rep_n}/app/views/#{@ua.rep_n}/#{ac.name}"
 			@status = 200
 			@res = ac
@@ -74,9 +77,7 @@ class AppsController < ApplicationController
 		ac = ErAppCtrl.find_by(name: params[:name] , uic: "#{params[:name]}.#{@ua.id}")
 		ac.content = params[:content]
 		if ac.save
-			File.open("apps_repo/#{@ua.rep_n}/app/controllers/#{@ua.rep_n}/#{ac.name}_controller.rb" , 'w') do |f|
-				f.write("require_dependency '#{@ua.rep_n}/application_controller' \n  module #{@ua.rep_n.capitalize}\n  class #{ac.name.capitalize}Controller < ApplicationController\n " + ac.content +  "\n end\n  end")
-			end
+			write_file_d("apps_repo/#{@ua.rep_n}/app/controllers/#{@ua.rep_n}/#{ac.name}_controller.rb" , "require_dependency '#{@ua.rep_n}/application_controller' \n  module #{@ua.rep_n.capitalize}\n  class #{ac.name.capitalize}Controller < ApplicationController\n " + ac.content +  "\n end\n  end")
 			@status = 200
 		end
 		render json: @res , status: @status		
@@ -96,9 +97,7 @@ class AppsController < ApplicationController
 	def create_model
 		am = ErAppModel.new(name: params[:name], er_user_app_id: @ua.id, uic: "#{params[:name]}.#{@ua.id}",content: "",table_n: params[:table_n])
 		if am.save
-			File.open("apps_repo/#{@ua.rep_n}/app/models/#{@ua.rep_n}/#{am.name}.rb" , 'w') do |f|
-				f.write("module #{@ua.rep_n.capitalize}\n  class #{am.name.capitalize} < ApplicationRecord\n self.table_name = '#{am.table_n}' \n end\n end \n")
-			end
+			write_file_d("apps_repo/#{@ua.rep_n}/app/models/#{@ua.rep_n}/#{am.name}.rb" , "module #{@ua.rep_n.capitalize}\n  class #{am.name.capitalize} < ApplicationRecord\n self.table_name = '#{am.table_n}' \n end\n end \n" )
 			@status = 200
 			@res = am
 		end
@@ -110,9 +109,7 @@ class AppsController < ApplicationController
 		am = ErAppModel.find_by(name: params[:name] , uic: "#{params[:name]}.#{@ua.id}")
 		am.content = params[:content]
 		if am.save
-			File.open("apps_repo/#{@ua.rep_n}/app/models/#{@ua.rep_n}/#{am.name}.rb" , 'w') do |f|
-				f.write("module #{@ua.rep_n.capitalize}\n  class #{am.name.capitalize} < ApplicationRecord\n self.table_name = '#{am.table_n}' \n " + am.content + "\n end \n end \n")
-			end
+			write_file_d("apps_repo/#{@ua.rep_n}/app/models/#{@ua.rep_n}/#{am.name}.rb","module #{@ua.rep_n.capitalize}\n  class #{am.name.capitalize} < ApplicationRecord\n self.table_name = '#{am.table_n}' \n " + am.content + "\n end \n end \n")
 			@status = 200
 		end
 		render json: @res , status: @status			
@@ -132,9 +129,7 @@ class AppsController < ApplicationController
 	def create_view
 		cv = ErCtrlView.new(name: params[:name], er_user_app_id: @ua.id, uic: "#{params[:name]}.#{params[:ctrl_n]}",ctrl_n: params[:ctrl_n],content: "")
 		if cv.save
-			File.open("apps_repo/#{@ua.rep_n}/app/views/#{cv.ctrl_n}-#{cv.name}.html.erb" , 'w') do |f|
-				f.write("")
-			end
+			write_file_d("apps_repo/#{@ua.rep_n}/app/views/#{cv.ctrl_n}-#{cv.name}.html.erb", "")
 			@status = 200
 			@res = cv
 		end
@@ -146,9 +141,7 @@ class AppsController < ApplicationController
 		cv = ErCtrlView.find_by(name: params[:name] , uic: "#{params[:name]}.#{params[:ctrl_n]}")
 		cv.content = params[:content]
 		if cv.save
-			File.open("apps_repo/#{@ua.rep_n}/app/views/#{cv.ctrl_n}-#{cv.name}.html.erb" , 'w') do |f|
-				f.write(cv.content)
-			end
+			write_file_d("apps_repo/#{@ua.rep_n}/app/views/#{cv.ctrl_n}-#{cv.name}.html.erb" , cv.content)
 			@status = 200
 		end
 		render json: @res , status: @status			
@@ -160,9 +153,7 @@ class AppsController < ApplicationController
 	def update_routes
 	    @ua.routes_inf = params[:routes_inf]
 	    if @ua.save
-	    	File.open("apps_repo/#{@ua.rep_n}/config/routes.rb" , 'w') do |f|
-				f.write("#{@ua.rep_n.capitalize}::Engine.routes.draw do \n" + @ua.routes_inf + "\n end \n")
-			end
+	    	write_file_d("apps_repo/#{@ua.rep_n}/config/routes.rb","#{@ua.rep_n.capitalize}::Engine.routes.draw do \n" + @ua.routes_inf + "\n end \n")
 			@status = 200
 	    end
 		render json: @res , status: @status		    	
@@ -173,9 +164,7 @@ class AppsController < ApplicationController
     	@ua.db_inf = params[:db_inf]
     	if @ua.save
     		js = JSON.parse(@ua.db_inf)
-    		File.open("apps_repo/#{@ua.rep_n}/app/models/#{@ua.rep_n}/application_record.rb" , 'w') do |f|
-				f.write("module #{@ua.rep_n.capitalize} \n class ApplicationRecord < ActiveRecord::Base \n self.abstract_class = true \n establish_connection(adapter: '#{js['adapter']}' , host: '#{js["host"]}' , username: '#{js["username"]}' , password: '#{js["password"]}' , database: '#{js["database"]}') \n end \n end \n")
-			end
+    		write_file_d("apps_repo/#{@ua.rep_n}/app/models/#{@ua.rep_n}/application_record.rb" , "module #{@ua.rep_n.capitalize} \n class ApplicationRecord < ActiveRecord::Base \n self.abstract_class = true \n establish_connection(adapter: '#{js['adapter']}' , host: '#{js["host"]}' , username: '#{js["username"]}' , password: '#{js["password"]}' , database: '#{js["database"]}') \n end \n end \n")
     		@status = 200
     	end
     	render json: @res , status: @status	
@@ -192,6 +181,17 @@ class AppsController < ApplicationController
     	@res = {}
     end
 
+# Write file data
+    def write_file_d(loc , cont)
+    	if Rails.env.production?
+    		client = DropboxClient.new("Uvvp9nfYjAAAAAAAAAAAEArT_bJ3I4xhUwL2pHhMY3KHgNsIxf_5hLxCNSfCq3mI")
+    		response = client.put_file("/Apps/heroku/easyrails/" + loc, cont)
+    	else
+    		File.open(loc , 'w') do |f|
+				f.write(cont)
+			end
+    	end
+    end
 # Get user app info 
     def find_ua
     	@ua = ErUserApp.find(session[:er_usr_app_parm])
