@@ -54,7 +54,7 @@ class AppsController < ApplicationController
 			File.open("apps_repo/#{@ua.rep_n}/app/controllers/#{@ua.rep_n}/#{ac.name}_controller.rb" , 'w') do |f|
 				f.write("")
 			end
-			Dir.mkdir "apps_repo/#{@ua.rep_n}/app/views/#{@ua.rep_n}/#{ac.name}"
+			#Dir.mkdir "apps_repo/#{@ua.rep_n}/app/views/#{@ua.rep_n}/#{ac.name}"
 			@status = 200
 			@res = ac
 		end
@@ -132,7 +132,7 @@ class AppsController < ApplicationController
 	def create_view
 		cv = ErCtrlView.new(name: params[:name], er_user_app_id: @ua.id, uic: "#{params[:name]}.#{params[:ctrl_n]}",ctrl_n: params[:ctrl_n],content: "")
 		if cv.save
-			File.open("apps_repo/#{@ua.rep_n}/app/views/#{@ua.rep_n}/#{cv.ctrl_n}/#{cv.name}.html.erb" , 'w') do |f|
+			File.open("apps_repo/#{@ua.rep_n}/app/views/#{cv.ctrl_n}-#{cv.name}.html.erb" , 'w') do |f|
 				f.write("")
 			end
 			@status = 200
@@ -146,7 +146,7 @@ class AppsController < ApplicationController
 		cv = ErCtrlView.find_by(name: params[:name] , uic: "#{params[:name]}.#{params[:ctrl_n]}")
 		cv.content = params[:content]
 		if cv.save
-			File.open("apps_repo/#{@ua.rep_n}/app/views/#{@ua.rep_n}/#{cv.ctrl_n}/#{cv.name}.html.erb" , 'w') do |f|
+			File.open("apps_repo/#{@ua.rep_n}/app/views/#{cv.ctrl_n}-#{cv.name}.html.erb" , 'w') do |f|
 				f.write(cv.content)
 			end
 			@status = 200

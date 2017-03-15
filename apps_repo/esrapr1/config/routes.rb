@@ -1,3 +1,3 @@
 Esrapr1::Engine.routes.draw do 
-root "users#home"
+root "posts#home"
  end 
