@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-	  before_action :islogged , except: [:welcome , :login , :sign_in]
+	  before_action :islogged , except: [:welcome , :login , :sign_up]
     
   def welcome
   end
