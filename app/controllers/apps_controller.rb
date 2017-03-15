@@ -56,7 +56,7 @@ class AppsController < ApplicationController
 	def create_ctrl
 		ac = ErAppCtrl.new(name: params[:name], er_user_app_id: @ua.id, uic: "#{params[:name]}.#{@ua.id}",content: "")
 		if ac.save
-			write_file_d("apps_repo/#{@ua.rep_n}/app/controllers/#{@ua.rep_n}/#{ac.name}_controller.rb","")
+			write_file_d("apps_repo/#{@ua.rep_n}/app/controllers/#{@ua.rep_n}/#{ac.name}_controller.rb","" , false)
 			#Dir.mkdir "apps_repo/#{@ua.rep_n}/app/views/#{@ua.rep_n}/#{ac.name}"
 			@status = 200
 			@res = ac
@@ -77,7 +77,7 @@ class AppsController < ApplicationController
 		ac = ErAppCtrl.find_by(name: params[:name] , uic: "#{params[:name]}.#{@ua.id}")
 		ac.content = params[:content]
 		if ac.save
-			write_file_d("apps_repo/#{@ua.rep_n}/app/controllers/#{@ua.rep_n}/#{ac.name}_controller.rb" , "require_dependency '#{@ua.rep_n}/application_controller' \n  module #{@ua.rep_n.capitalize}\n  class #{ac.name.capitalize}Controller < ApplicationController\n " + ac.content +  "\n end\n  end")
+			write_file_d("apps_repo/#{@ua.rep_n}/app/controllers/#{@ua.rep_n}/#{ac.name}_controller.rb" , "require_dependency '#{@ua.rep_n}/application_controller' \n  module #{@ua.rep_n.capitalize}\n  class #{ac.name.capitalize}Controller < ApplicationController\n " + ac.content +  "\n end\n  end" , true)
 			@status = 200
 		end
 		render json: @res , status: @status		
@@ -97,7 +97,7 @@ class AppsController < ApplicationController
 	def create_model
 		am = ErAppModel.new(name: params[:name], er_user_app_id: @ua.id, uic: "#{params[:name]}.#{@ua.id}",content: "",table_n: params[:table_n])
 		if am.save
-			write_file_d("apps_repo/#{@ua.rep_n}/app/models/#{@ua.rep_n}/#{am.name}.rb" , "module #{@ua.rep_n.capitalize}\n  class #{am.name.capitalize} < ApplicationRecord\n self.table_name = '#{am.table_n}' \n end\n end \n" )
+			write_file_d("apps_repo/#{@ua.rep_n}/app/models/#{@ua.rep_n}/#{am.name}.rb" , "module #{@ua.rep_n.capitalize}\n  class #{am.name.capitalize} < ApplicationRecord\n self.table_name = '#{am.table_n}' \n end\n end \n" ,false)
 			@status = 200
 			@res = am
 		end
@@ -109,7 +109,7 @@ class AppsController < ApplicationController
 		am = ErAppModel.find_by(name: params[:name] , uic: "#{params[:name]}.#{@ua.id}")
 		am.content = params[:content]
 		if am.save
-			write_file_d("apps_repo/#{@ua.rep_n}/app/models/#{@ua.rep_n}/#{am.name}.rb","module #{@ua.rep_n.capitalize}\n  class #{am.name.capitalize} < ApplicationRecord\n self.table_name = '#{am.table_n}' \n " + am.content + "\n end \n end \n")
+			write_file_d("apps_repo/#{@ua.rep_n}/app/models/#{@ua.rep_n}/#{am.name}.rb","module #{@ua.rep_n.capitalize}\n  class #{am.name.capitalize} < ApplicationRecord\n self.table_name = '#{am.table_n}' \n " + am.content + "\n end \n end \n" , true)
 			@status = 200
 		end
 		render json: @res , status: @status			
@@ -129,7 +129,7 @@ class AppsController < ApplicationController
 	def create_view
 		cv = ErCtrlView.new(name: params[:name], er_user_app_id: @ua.id, uic: "#{params[:name]}.#{params[:ctrl_n]}",ctrl_n: params[:ctrl_n],content: "")
 		if cv.save
-			write_file_d("apps_repo/#{@ua.rep_n}/app/views/#{cv.ctrl_n}-#{cv.name}.html.erb", "")
+			write_file_d("apps_repo/#{@ua.rep_n}/app/views/#{cv.ctrl_n}-#{cv.name}.html.erb", "" , false)
 			@status = 200
 			@res = cv
 		end
@@ -141,7 +141,7 @@ class AppsController < ApplicationController
 		cv = ErCtrlView.find_by(name: params[:name] , uic: "#{params[:name]}.#{params[:ctrl_n]}")
 		cv.content = params[:content]
 		if cv.save
-			write_file_d("apps_repo/#{@ua.rep_n}/app/views/#{cv.ctrl_n}-#{cv.name}.html.erb" , cv.content)
+			write_file_d("apps_repo/#{@ua.rep_n}/app/views/#{cv.ctrl_n}-#{cv.name}.html.erb" , cv.content , true)
 			@status = 200
 		end
 		render json: @res , status: @status			
@@ -153,7 +153,7 @@ class AppsController < ApplicationController
 	def update_routes
 	    @ua.routes_inf = params[:routes_inf]
 	    if @ua.save
-	    	write_file_d("apps_repo/#{@ua.rep_n}/config/routes.rb","#{@ua.rep_n.capitalize}::Engine.routes.draw do \n" + @ua.routes_inf + "\n end \n")
+	    	write_file_d("apps_repo/#{@ua.rep_n}/config/routes.rb","#{@ua.rep_n.capitalize}::Engine.routes.draw do \n" + @ua.routes_inf + "\n end \n" , true)
 			@status = 200
 	    end
 		render json: @res , status: @status		    	
@@ -164,7 +164,7 @@ class AppsController < ApplicationController
     	@ua.db_inf = params[:db_inf]
     	if @ua.save
     		js = JSON.parse(@ua.db_inf)
-    		write_file_d("apps_repo/#{@ua.rep_n}/app/models/#{@ua.rep_n}/application_record.rb" , "module #{@ua.rep_n.capitalize} \n class ApplicationRecord < ActiveRecord::Base \n self.abstract_class = true \n establish_connection(adapter: '#{js['adapter']}' , host: '#{js["host"]}' , username: '#{js["username"]}' , password: '#{js["password"]}' , database: '#{js["database"]}') \n end \n end \n")
+    		write_file_d("apps_repo/#{@ua.rep_n}/app/models/#{@ua.rep_n}/application_record.rb" , "module #{@ua.rep_n.capitalize} \n class ApplicationRecord < ActiveRecord::Base \n self.abstract_class = true \n establish_connection(adapter: '#{js['adapter']}' , host: '#{js["host"]}' , username: '#{js["username"]}' , password: '#{js["password"]}' , database: '#{js["database"]}') \n end \n end \n",true)
     		@status = 200
     	end
     	render json: @res , status: @status	
