@@ -6,6 +6,7 @@ class UsersController < ApplicationController
 
   def dashboard
     @u = ErUser.find(session[:er_usr_parm])
+	  redirect_to "/welcome"
   end
 
   def login
